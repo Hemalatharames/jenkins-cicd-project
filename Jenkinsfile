@@ -28,8 +28,13 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                echo 'Deployment stage - coming next'
+                sshagent(['ec2-deploy-key']) {
+                    sh '''
+                        scp -o StrictHostKeyChecking=no index.html style.css ec2-user@172.31.13.64:/usr/share/nginx/html/
+                    '''
+                }
             }
         }
+
     }
 }
